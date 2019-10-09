@@ -19,22 +19,14 @@ const fetchAndRenderRedditPosts = async () =>  {
       type: 'GET',
       dataType: 'JSON'
     })
-
-    const renderedPosts = renderPosts(response.data.children)
     
-    $('#app').append(renderedPosts)
+    $('#app').append(await renderPosts(response.data.children))
   } catch (error) {
     console.error(error)
   }
 }
 
-const isImageValid = imageUrl => {
-  if (imageUrl === 'self' && !imageUrl) {
-    return false
-  } else {
-    return true
-  }
-}
+const isThumbnailValid = thumbnail => thumbnail !== 'self' && thumbnail !== undefined && thumbnail !== null
 
 const getUserInput = () => {
   const subredditInput = $('#subreddit-input')
@@ -46,13 +38,12 @@ const renderPosts = posts => {
   const renderedPostsArray = []
 
   for (const post of posts) {
-    const { title, permalink } = post.data
-    const imageUrl = post.data.preview.images[0].source.url
+    const { thumbnail, title, permalink } = post.data
 
-    if (isImageValid(imageUrl)) {
+    if (isThumbnailValid(thumbnail)) {
       renderedPostsArray.push(`
         <a href="https://www.reddit.com${permalink}" title="${title}" target="_blank">
-          <img alt="${title}" src="${imageUrl}" />
+          <img alt="${title}" src="${thumbnail}" />
         </a>
       `)
     }
