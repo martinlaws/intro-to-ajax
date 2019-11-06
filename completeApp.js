@@ -1,3 +1,20 @@
+const fetchAndRenderRedditPosts = async () =>  {
+  try {
+    const response = await $.ajax({
+      url: `https://www.reddit.com/r/${getUserInput()}.json`,
+      type: 'GET',
+      dataType: 'JSON'
+    })
+
+    const renderedPosts = renderPosts(response.data.children)
+
+    $('#app').append(renderedPosts)
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+// The following is also a totally valid approach to fetchAndRenderRedditPosts using .then and .catch =>
 // const fetchAndRenderRedditPosts = () =>  {
 //   $.ajax({
 //     url: `https://www.reddit.com/r/${getUserInput()}.json`,
@@ -12,33 +29,14 @@
 //   })
 // }
 
-const fetchAndRenderRedditPosts = async () =>  {
-  try {
-    const response = await $.ajax({
-      url: `https://www.reddit.com/r/${getUserInput()}.json`,
-      type: 'GET',
-      dataType: 'JSON'
-    })
-    
-    $('#app').append(await renderPosts(response.data.children))
-  } catch (error) {
-    console.error(error)
-  }
-}
-
-const isThumbnailValid = thumbnail => thumbnail !== 'self' && thumbnail !== undefined && thumbnail !== null
-
-const getUserInput = () => {
-  const subredditInput = $('#subreddit-input')
-
-  return subredditInput.val()
-}
-
+// This function loops over each of the posts returned by the api and renders it into markup
 const renderPosts = posts => {
   const renderedPostsArray = []
 
-  for (const post of posts) {
-    const { thumbnail, title, permalink } = post.data
+  for (let post of posts) {
+    const { thumbnail, permalink, title } = post.data
+
+    console.log(thumbnail, title)
 
     if (isThumbnailValid(thumbnail)) {
       renderedPostsArray.push(`
@@ -48,6 +46,20 @@ const renderPosts = posts => {
       `)
     }
   }
-  
+
   return renderedPostsArray.join('')
+} 
+
+// This function checks if the thumbnail value matches one of our known invalid cases
+const isThumbnailValid = thumbnailURL => {
+  const blacklistedValues = ['self', undefined, null, 'unknown', '', 'default']
+
+  if (blacklistedValues.includes(thumbnailURL)) {
+    return false
+  }
+
+  return true
 }
+
+// This function grabs the value of the subreddit input on the page
+const getUserInput = () => $('#subreddit-input').val()
