@@ -19,11 +19,26 @@
       max-height: 500px;
       max-width: 500px;
     }
+
+    div#app {
+      border: 1px solid green;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+    }
+
+    .error {
+      color: red;
+    }
   </style>
 </head>
 <body>
-  <input type="text" id="subreddit-input" />
-  <button onclick="fetchAndRenderRedditPosts()">Fetch Reddit posts!</button>
+  <header>
+    <input type="text" id="subreddit-input" />
+    <button onclick="fetchAndRenderRedditPosts()">Fetch Reddit posts!</button>
+  </header>
   <div id="app">
     <!-- our JS-generated code will be injected here -->
   </div>

@@ -1,45 +1,46 @@
-const fetchAndRenderRedditPosts = async () =>  {
-  try {
-    const response = await $.ajax({
-      url: `https://www.reddit.com/r/${getUserInput()}.json`,
-      type: 'GET',
-      dataType: 'JSON'
+// this is the vanilla JS equivalent of $(document).ready():
+// document.addEventListener('DOMContentLoaded', () => {
+// })
+
+const getUserInput = () => $('#subreddit-input').val()
+
+const fetchAndRenderRedditPosts = () => {
+  $.ajax({
+    url: `https://www.reddit.com/r/${getUserInput()}.json`,
+    type: "GET",
+    dataType: "JSON"
+  })
+    .then(response => {
+      const renderedPosts = formatRedditPosts(response.data.children)
+
+      $('#app').append(renderedPosts)
+      // document.getElementById('app').append(renderedPosts)
+
     })
+    .catch(() => {
+      const errorMessage = `
+        <div class="error">
+          <h1>Whoops, something went wrong!</h1>
+          <p>Please try a different subreddit or call support at 967-1111</p>
+        </div>
+      `
 
-    const renderedPosts = renderPosts(response.data.children)
+      $('#app').append(errorMessage)
+    });
+};
 
-    $('#app').append(renderedPosts)
-  } catch (err) {
-    console.error(err)
-  }
-}
+const formatRedditPosts = posts => {
+  const markupArray = [];
 
-// The following is also a totally valid approach to fetchAndRenderRedditPosts using .then and .catch =>
-// const fetchAndRenderRedditPosts = () =>  {
-//   $.ajax({
-//     url: `https://www.reddit.com/r/${getUserInput()}.json`,
-//     type: 'GET',
-//     dataType: 'JSON'
-//   }).then( response => {
-//     const renderedPosts = renderPosts(response.data.children)
-    
-//     $('#app').append(renderedPosts)
-//   }).catch(error => {
-//     console.error(error)
-//   })
-// }
-
-// This function loops over each of the posts returned by the api and renders it into markup
-const renderPosts = posts => {
-  const renderedPostsArray = []
-
-  for (let post of posts) {
-    const { thumbnail, permalink, title } = post.data
-
-    console.log(thumbnail, title)
+  for (post of posts) {
+    const {
+      title, 
+      permalink, 
+      thumbnail
+    } = post.data;
 
     if (isThumbnailValid(thumbnail)) {
-      renderedPostsArray.push(`
+      markupArray.push(`
         <a href="https://www.reddit.com${permalink}" title="${title}" target="_blank">
           <img alt="${title}" src="${thumbnail}" />
         </a>
@@ -47,8 +48,8 @@ const renderPosts = posts => {
     }
   }
 
-  return renderedPostsArray.join('')
-} 
+  return markupArray.join('');
+}
 
 // This function checks if the thumbnail value matches one of our known invalid cases
 const isThumbnailValid = thumbnailURL => {
@@ -60,6 +61,3 @@ const isThumbnailValid = thumbnailURL => {
 
   return true
 }
-
-// This function grabs the value of the subreddit input on the page
-const getUserInput = () => $('#subreddit-input').val()
