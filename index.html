@@ -1,46 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, maximum-scale=1, user-scalable=0, user-scalable=no">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Reddit App!</title>
-  <script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script>
-  <script src="./app.js"></script>
-  <style>
-    body {
-      background-color: black;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, maximum-scale=1, user-scalable=0, user-scalable=no"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Reddit App!</title>
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
+    <script src="./app.js"></script>
+    <style>
+      body {
+        background-color: black;
+      }
 
-    img {
-      max-height: 500px;
-      max-width: 500px;
-    }
+      img {
+        max-height: 500px;
+        max-width: 500px;
+      }
 
-    div#app {
-      border: 1px solid green;
-    }
+      div#app {
+        border: 1px solid green;
+      }
 
-    header {
-      position: fixed;
-      top: 0;
-    }
+      header {
+        position: fixed;
+        top: 0;
+      }
 
-    .error {
-      color: red;
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <input type="text" id="subreddit-input" />
-    <button onclick="fetchAndRenderRedditPosts()">Fetch Reddit posts!</button>
-  </header>
-  <div id="app">
-    <!-- our JS-generated code will be injected here -->
-  </div>
-</body>
+      .error {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <input type="text" id="subreddit-input" />
+      <button onclick="fetchAndRenderRedditPosts()">Fetch Reddit posts!</button>
+    </header>
+    <div id="app">
+      <!-- our JS-generated code will be injected here -->
+    </div>
+  </body>
 </html>
