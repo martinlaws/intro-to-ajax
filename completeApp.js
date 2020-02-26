@@ -31,7 +31,7 @@ const fetchAndRenderRedditPosts = () => {
 const formatRedditPosts = posts => {
   const markupArray = [];
 
-  for (post of posts) {
+  for (const post of posts) {
     const { title, permalink, thumbnail } = post.data;
 
     if (isThumbnailValid(thumbnail)) {
