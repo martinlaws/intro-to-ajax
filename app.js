@@ -8,9 +8,9 @@ const fetchAndRenderRedditPosts = () => {
   $.ajax({
     url: `https://www.reddit.com/r/${getUserInput()}.json`,
     type: "GET",
-    dataType: "JSON"
+    dataType: "JSON",
   })
-    .then(response => {
+    .then((response) => {
       const renderedPosts = formatRedditPosts(response.data.children);
 
       $("#app").append(renderedPosts);
@@ -28,10 +28,10 @@ const fetchAndRenderRedditPosts = () => {
     });
 };
 
-const formatRedditPosts = posts => {
+const formatRedditPosts = (posts) => {
   const markupArray = [];
 
-  for (post of posts) {
+  for (const post of posts) {
     const { title, permalink, thumbnail } = post.data;
 
     if (isThumbnailValid(thumbnail)) {
@@ -47,7 +47,7 @@ const formatRedditPosts = posts => {
 };
 
 // This function checks if the thumbnail value matches one of our known invalid cases
-const isThumbnailValid = thumbnailURL => {
+const isThumbnailValid = (thumbnailURL) => {
   const blacklistedValues = ["self", undefined, null, "unknown", "", "default"];
 
   if (blacklistedValues.includes(thumbnailURL)) {
